@@ -27,17 +27,21 @@ public class bike {
         } else {
             String result;
             this.acc++;
-            if (this.acc > 0 && this.acc <= 20) {
+            if (this.acc >= 0 && this.acc <= 20) {
                 this.gear = 1;
+
             }
-            if (this.acc > 20 && this.acc <= 30) {
+            if (this.acc > 20 && this.acc <= 29) {
                 this.gear = 2;
+
             }
             if (this.acc > 30 && this.acc <= 40) {
                 this.gear = 3;
+
             }
             if (this.acc>40){
                 this.gear = 4;
+
             }
             result = String.format("acceleration of %dm/s at gear%d", this.acc, this.gear);
             return result;
@@ -54,16 +58,20 @@ public class bike {
             }else {
                 String result ;
                 this.acc--;
-                if (this.acc > 0 && this.acc <= 20) {
+                if (this.acc >= 0 && this.acc <= 20) {
                     this.gear = 1;
+
                 }
                 if (this.acc > 20 && this.acc <= 30) {
                     this.gear = 2;
+
                 }
                 if (this.acc > 30 && this.acc <= 40) {
                     this.gear = 3;
+
                 } if(this.acc > 40){
                     this.gear = 4;
+
                 }
                 result = String.format("acceleration of %dm/s at gear%d", this.acc, this.gear);
                 return result;

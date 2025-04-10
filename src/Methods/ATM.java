@@ -3,7 +3,7 @@ package Methods;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-
+import java.util.InputMismatchException;
 public class ATM {
     static Scanner entries = new Scanner(System.in);
 
@@ -24,23 +24,42 @@ public class ATM {
                     
                     """);
 
-            System.out.print("Enter your choice: ");
-            int option = entries.nextInt();
+            int option = 0;
+            boolean valid = false;
 
-            while (option <= 0 || option > 4) {
-                System.out.println("Unacceptable value: please enter option number.");
-                System.out.print("Enter your choice: ");
-                option = entries.nextInt();
+            while (!valid) {
+                try {
+                    System.out.print("Enter your choice: ");
+                    option = entries.nextInt();
+
+                    if (option < 1 || option > 4) {
+                        System.out.println("Unacceptable value: please enter option number between 1 and 5.");
+                    } else {
+                        valid = true;
+                    }
+
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input: please enter a number.");
+                    entries.next();
+                }
             }
+
             switch (option) {
                 case 1:
                     System.out.print("Enter your First name: ");
                     entries.nextLine();
                     String FirstName = entries.nextLine();
-
+                    while(FirstName.isEmpty()){
+                        System.out.println("Enter your details please ");
+                        FirstName = entries.nextLine();
+                    }
                     System.out.print("Enter your Last name: ");
 
                     String LastName = entries.nextLine();
+                    while(LastName.isEmpty()){
+                        System.out.println("Enter your details please ");
+                        LastName = entries.nextLine();
+                    }
                     System.out.print("Enter your Password: ");
                     String Password = entries.nextLine();
                     while (!Password.matches("\\d{4}")) {
@@ -48,11 +67,14 @@ public class ATM {
                         Password = entries.nextLine();
 
                     }
-
-                    addAccount(FirstName,LastName,Password);
-                    String accNumber =getAccountNumber(FirstName,LastName,Password);
-                    System.out.println("here is your account Number:"+accNumber);
-
+                        boolean checking = checkaddAccount(FirstName,LastName,Password);
+                    if (checking) {
+                        addAccount(FirstName, LastName, Password);
+                        String accNumber = getAccountNumber(FirstName, LastName, Password);
+                        System.out.println("here is your account Number:" + accNumber);
+                    }else {
+                        System.out.println("Account already exist");
+                    }
 
                     break;
 
@@ -67,13 +89,18 @@ public class ATM {
                     String Name2 = entries.nextLine();
                     System.out.print("Enter your Password: ");
                     String Pin = entries.nextLine();
+                    while (!Pin.matches("\\d{4}")) {
+                        System.out.print("Password must be 4 digist: ");
+                        Pin = entries.nextLine();
+
+                    }
 
                     boolean check = getAccount(Name1,Name2,Pin);
                     if (check){
-                        System.out.println(getACCnumber(Name1,Name2,Pin));
+                       // System.out.println(getACCnumber(Name1,Name2,Pin));
                         System.out.println("""
                             
-                            Enter what transaction you want to do 
+                            Enter what transaction you want to do. 
                             
                             1. deposit.
                             2. withdraw.
@@ -82,24 +109,71 @@ public class ATM {
                             5. check balance.
                             """);
                         System.out.print("Enter your choice: ");
-                        int option2 = entries.nextInt();
+                        int option2 = 0;
 
-                        while (option2 <= 0 || option2 > 5) {
-                            System.out.println("Unacceptable value: please enter option number.");
-                            System.out.print("Enter your choice: ");
-                            option2 = entries.nextInt();
+                         valid = false;
+                        while (!valid) {
+                            try {
+                                System.out.print("Enter your choice: ");
+                                option2 = entries.nextInt();
+
+                                if (option2 < 1 || option2 > 5) {
+                                    System.out.println("Unacceptable value: please enter option number between 1 and 5.");
+                                } else {
+                                    valid = true;
+                                }
+
+                            } catch (InputMismatchException e) {
+                                System.out.println("Invalid input: please enter a number.");
+                                entries.next();
+                            }
                         }
 
                         switch (option2){
                             case 1:
-                                System.out.print("Enter amount:");
-                                double amount = entries.nextDouble();
+
+                                double amount =0 ;
+                                valid = false;
+                                while (!valid) {
+                                    try {
+                                        System.out.print("Enter amount:");
+                                        amount = entries.nextDouble();
+
+                                        if (amount < 0 ) {
+                                            System.out.println("no negative number");
+                                        } else {
+                                            valid = true;
+                                        }
+
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Invalid input: please enter a number.");
+                                        entries.next();
+                                    }
+                                }
                                 System.out.println(getDeposit(Name1,Name2,Pin,amount));
 
                                 break;
                             case 2:
-                                System.out.print("Enter amount:");
-                                double amount1 = entries.nextDouble();
+
+                                double amount1 = 0;
+
+                                valid = false;
+                                while (!valid) {
+                                    try {
+                                        System.out.print("Enter amount:");
+                                        amount1 = entries.nextDouble();
+
+                                        if (amount1 < 0 ) {
+                                            System.out.println("no negative number");
+                                        } else {
+                                            valid = true;
+                                        }
+
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Invalid input: please enter a number.");
+                                        entries.next();
+                                    }
+                                }
                                 System.out.println(getWithdrawer(Name1,Name2,Pin,amount1));
 
                                 break;
@@ -112,9 +186,28 @@ public class ATM {
                                 System.out.print("Enter reciever account number: ");
 
                                 String AccountNumber = entries.nextLine();
-                                System.out.print("Enter amount: ");
 
-                                double amountTransfer = entries.nextDouble();
+
+
+                                double amountTransfer = 0;
+
+                                valid = false;
+                                while (!valid) {
+                                    try {
+                                        System.out.print("Enter amount:");
+                                        amountTransfer = entries.nextDouble();
+
+                                        if (amountTransfer < 0 ) {
+                                            System.out.println("no negative number");
+                                        } else {
+                                            valid = true;
+                                        }
+
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Invalid input: please enter a number.");
+                                        entries.next();
+                                    }
+                                }
 
                                 System.out.println(transfer(Name1,Name2,Pin,RecieverName,amountTransfer,RecieverName1,AccountNumber));
 
@@ -142,8 +235,17 @@ public class ATM {
 
 
                 case 3:
+                    System.out.print("Enter your First name: ");
+                    entries.nextLine();
+                    String Name20 = entries.nextLine();
 
+                    System.out.print("Enter your Last name: ");
 
+                    String Name2i = entries.nextLine();
+                    System.out.print("Enter your Password: ");
+                    String Pin1 = entries.nextLine();
+
+                    System.out.println(delAccount(Name20,Name2i,Pin1));
                     break;
                 case 4:
                     repeat = false;
@@ -166,6 +268,17 @@ public class ATM {
 
         return  AllAcc;
 
+    }
+    public static boolean checkaddAccount(String FirstName, String LastName, String PassWord){
+        boolean check = true;
+        for(HashMap<String,String> detail:AllAcc){
+            if(detail.get("First_Name").equals(FirstName)
+                    && detail.get("Last_Name").equals(LastName)
+                    && detail.get("Password").equals(PassWord)){
+                check = false;
+            }
+        }
+        return check;
     }
 
     public static String getAccountNumber(String FirstName, String LastName, String PassWord){
@@ -272,36 +385,63 @@ public class ATM {
         return "your pin code has being successfully change.";
     }
 
-    public static String transfer(String FirstName, String LastName, String PassWord,String ReciverName,double amount,
-                                  String ReciverlastName, String AccountNumber) {
+    public static String transfer(String FirstName, String LastName, String PassWord, String ReciverName,
+                                  double amount, String ReciverlastName, String AccountNumber) {
+        HashMap<String, String> sender = null;
+        HashMap<String, String> receiver = null;
+
         for (HashMap<String, String> detail : AllAcc) {
             if (detail.get("First_Name").equals(FirstName)
                     && detail.get("Last_Name").equals(LastName)
                     && detail.get("Password").equals(PassWord)) {
-                boolean check = Account.withdrawerConfirmation(detail, amount);
-                if (check) {
-                    Account.withdrawer(detail, amount);
-
-                } else {
-                    return "you dont have up to " + amount + " in your account";
-                }
+                sender = detail;
             }
         }
 
-        for (HashMap<String, String> detail2 : AllAcc) {
-            if (detail2.get("First_Name").equals(ReciverName)
-                    && detail2.get("Last_Name").equals(ReciverlastName)
-                    && detail2.get("Account_Number").equals(AccountNumber)) {
-                Account.deposit(detail2, amount);
-            } else {
-                return "This account do not exist";
+        for (HashMap<String, String> detail : AllAcc) {
+            if (detail.get("First_Name").equals(ReciverName)
+                    && detail.get("Last_Name").equals(ReciverlastName)
+                    && detail.get("Account_Number").equals(AccountNumber)) {
+                receiver = detail;
             }
         }
+
+        if (sender == null) {
+            return "Sender account not found";
+        }
+
+        if (receiver == null) {
+            return "Receiver account not found";
+        }
+
+        if (!Account.withdrawerConfirmation(sender, amount)) {
+            return "you dont have up to " + amount + " in your account";
+        }
+
+        Account.withdrawer(sender, amount);
+        Account.deposit(receiver, amount);
+
         return "Transaction was successful";
     }
 
 
-
+    public static String delAccount(String FirstName, String LastName, String PassWord){
+        int numb =0;
+        String response = "";
+        for(int count = 0; count< AllAcc.size();count++){
+       if(AllAcc.get(count).get("First_Name").equals(FirstName) && AllAcc.get(count).get("Last_Name").equals(LastName)
+               &&  AllAcc.get(count).get("Password").equals(PassWord)){
+           numb++;
+            AllAcc.remove(count);
+       }
+       }
+        if(numb ==0){
+            response = "such account do not exist";
+        }else {
+            response = "account has being close";
+        }
+        return response;
+    }
 
 
 

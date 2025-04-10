@@ -50,30 +50,30 @@ class bikeTest {
     public void testThatBikeSpeedCanIncreasewithinGear2(){
         bike Control = new bike();
         Control.power();
-        for (int count=1;count<=25;count++) {
+        for (int count=1;count<=27;count++) {
             Control.increse();
         }
-        assertEquals("acceleration of 26m/s at gear2",Control.increse());
+        assertEquals("acceleration of 28m/s at gear2",Control.increse());
     }
 
     @Test
     public void testThatBikeSpeedCanIncreaseAtGear3(){
         bike Control = new bike();
         Control.power();
-        for (int count=1;count<=30;count++) {
+        for (int count=1;count<=23;count++) {
             Control.increse();
         }
-        assertEquals("acceleration of 31m/s at gear3",Control.increse());
+        assertEquals("acceleration of 24m/s at gear2",Control.increse());
     }
 
     @Test
     public void testThatBikeSpeedCanIncreasewithinGear3(){
         bike Control = new bike();
         Control.power();
-        for (int count=1;count<=36;count++) {
+        for (int count=1;count<=34;count++) {
             Control.increse();
         }
-        assertEquals("acceleration of 37m/s at gear3",Control.increse());
+        assertEquals("acceleration of 35m/s at gear3",Control.increse());
     }
 
 

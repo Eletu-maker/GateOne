@@ -2,7 +2,7 @@ package Methods;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,23 +10,28 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ATMTest {
+    @Before
+    public void reset() {
+        ATM.AllAcc.clear();
+    }
+
 
     @Test
     public void testAddAcount(){
-        String firstName = "usman";
-        String lastName = "eletu";
-        String password = "1234";
+        String firstNam = "usman";
+        String lastNam = "eletu";
+        String passwor = "1234";
 
         ATM atm = new ATM();
 
-        ArrayList<HashMap<String,String>> accounts = atm.addAccount(firstName, lastName, password);
+        ArrayList<HashMap<String,String>> accounts = atm.addAccount(firstNam, lastNam, passwor);
         HashMap<String,String> account = accounts.get(0);
 
 
 
-        assertEquals(firstName, account.get("First_Name"));
-        assertEquals(lastName, account.get("Last_Name"));
-        assertEquals(password, account.get("Password"));
+        assertEquals(firstNam, account.get("First_Name"));
+        assertEquals(lastNam, account.get("Last_Name"));
+        assertEquals(passwor, account.get("Password"));
         assertEquals("0.00", account.get("Balance"));
 
         String accNum =  account.get("Account_Number");
@@ -144,9 +149,9 @@ public class ATMTest {
 
     @Test
     public void testAccNumber(){
-        String firstName = "suya";
-        String lastName = "eric";
-        String password = "1224";
+        String firstName = "usman";
+        String lastName = "eletu";
+        String password = "1234";
 
         ATM atm = new ATM();
         atm.addAccount(firstName, lastName, password);
@@ -184,5 +189,43 @@ public class ATMTest {
         assertEquals("Transaction was successful",
                 ATM.transfer(firstName,lastName,password,recieverfirstName,amountTransfer,recieverlastName,accNum));
     }
+
+    @Test
+    public void testCloseAcc(){
+        String firstName = "usman";
+        String lastName = "eletu";
+        String password = "1234";
+        ATM atm = new ATM();
+        assertEquals("such account do not exist",atm.delAccount(firstName,lastName,password));
+        atm.addAccount(firstName, lastName, password);
+        assertEquals("account has being close",atm.delAccount(firstName,lastName,password));
+
+    }
+
+
+    @Test
+    public void testCheckaddAccount(){
+        String firstName = "usman";
+        String lastName = "eletu";
+        String password = "1234";
+        ATM atm = new ATM();
+        assertTrue(atm.checkaddAccount(firstName,lastName,password));
+        atm.addAccount(firstName, lastName, password);
+        assertFalse(atm.checkaddAccount(firstName,lastName,password));
+
+    }
+
+
+    @Test
+    public void testGetAccountNumber(){
+        String firstName = "usman";
+        String lastName = "eletu";
+        String password = "1234";
+        ArrayList<HashMap<String,String>> accounts = ATM.addAccount(firstName, lastName, password);
+        String accNumber = accounts.get(0).get("Account_Number");
+        assertEquals(accNumber, ATM.getAccountNumber(firstName, lastName, password));
+
+    }
+
 
 }
